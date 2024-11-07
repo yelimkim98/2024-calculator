@@ -1,7 +1,10 @@
 plugins {
     id 'java'
+    // spring version 바꾸고싶으면 여기서 수정하면 된다.
+    // 이 줄이 지워지면 spring 이 날아간다.
     id 'org.springframework.boot' version '3.3.5'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'jacoco'
 }
 
 group = 'naver.kiel0103'
@@ -34,4 +37,15 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// 0.2 (= 20%) 이상 커버리지를 충족하지 못하면 빌드 실패
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.2 // 최소 커버리지 비율을 20%로 설정
+            }
+        }
+    }
 }

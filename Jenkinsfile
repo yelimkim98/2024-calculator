@@ -28,12 +28,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            mail to: "kiel0103@kakao.com"
-            subject: "Build Finish"
-            body: "Hello Email"
-        }
-    }
 }

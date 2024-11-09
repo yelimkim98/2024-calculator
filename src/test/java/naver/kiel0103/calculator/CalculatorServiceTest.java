@@ -1,8 +1,8 @@
 package naver.kiel0103.calculator;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class CalculatorServiceTest {
 
@@ -11,5 +11,10 @@ class CalculatorServiceTest {
     @Test
     void sum() {
         assertEquals(calculatorService.sum(10, 20), 30);
+    }
+
+    @Test
+    void subtract() {
+        assertEquals(calculatorService.subtract(10, 20), -10);
     }
 }

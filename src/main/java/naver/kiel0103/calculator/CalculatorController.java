@@ -14,8 +14,14 @@ public class CalculatorController {
 
     @GetMapping("/sum")
     public ResponseEntity<Integer> sum(
-            @RequestParam("a") Integer a, @RequestParam("b") Integer b
+        @RequestParam("a") Integer a, @RequestParam("b") Integer b
     ) {
         return ResponseEntity.ok(service.sum(a, b));
+    }
+
+    public ResponseEntity<Integer> subtract(
+        @RequestParam("a") Integer a, @RequestParam("b") Integer b
+    ) {
+        return ResponseEntity.ok(service.subtract(a, b));
     }
 }

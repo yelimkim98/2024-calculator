@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HUB_CREDENTIALS_ID = credentials('docker_hub_test_credential')
-    }
     stages {
         stage("Permission") {
             steps {
@@ -35,14 +32,19 @@ pipeline {
                 sh "docker build -t 2024-calculator ."
             }
         }
-        stage("Docker HUB Login") {
+        stage("Push Image") {
             steps {
                 withCredentials([usernamePassword(
-                        credentialsId: "${DOCKER_CREDENTIALS_ID}",
-                        usernameVariable: 'DOCKER_USERNAME',
-                        passwordVariable: 'DOCKER_PASSWORD')])
-                {
-                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                    credentialsId: 'docker_hub_test_credential',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh """
+                    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                    docker tag 2024-calculator:latest $DOCKER_USERNAME/2024-calculator:latest
+                    docker push $DOCKER_USERNAME/2024-calculator:latest
+                    docker logout
+                    """
                 }
             }
         }

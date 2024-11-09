@@ -1,14 +1,12 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HUB_CREDENTIALS_ID = credentials('docker_hub_test_credential')
+    }
     stages {
         stage("Permission") {
             steps {
                 sh "chmod +x ./gradlew"
-            }
-        }
-        stage("Compile") {
-            steps {
-                sh "./gradlew compileJava"
             }
         }
         stage("Test") {
@@ -27,15 +25,26 @@ pipeline {
                 ])
             }
         }
-//         stage("Gradle Build") {
-//             steps {
-//                 sh "./gradlew clean build"
-//             }
-//         }
-//         stage("Docker Build") {
-//             steps {
-//                 sh "docker build -t calculator_pipeline ."
-//             }
-//         }
+        stage("Gradle Build") {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
+        stage("Docker Build") {
+            steps {
+                sh "docker build -t 2024-calculator ."
+            }
+        }
+        stage("Docker HUB Login") {
+            steps {
+                withCredentials([usernamePassword(
+                        credentialsId: "${DOCKER_CREDENTIALS_ID}",
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD')])
+                {
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin"
+                }
+            }
+        }
     }
 }

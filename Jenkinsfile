@@ -44,8 +44,6 @@ pipeline {
             }
             steps {
                 sh "echo $CALCULATOR_CREDENTIAL_PSW | docker login -u $CALCULATOR_CREDENTIAL_USR --password-stdin"
-                sh "echo \"# BUILD_ID = $BUILD_ID\""
-                sh "echo \"# BUILD_NUMBER = $BUILD_NUMBER\""
                 sh "docker tag 2024-calculator:latest $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
                 sh "docker push $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
                 sh "docker logout"

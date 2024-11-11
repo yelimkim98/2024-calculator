@@ -22,6 +22,11 @@ pipeline {
                 ])
             }
         }
+        stage("Static Analysis") {
+            steps {
+                sh "./gradlew checkstyleMain"
+            }
+        }
         stage("Gradle Build") {
             steps {
                 sh "./gradlew clean build"

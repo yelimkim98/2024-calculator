@@ -62,4 +62,22 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            emailext(
+                body: 'BUILD_ID=$BUILD_ID - Build Success',
+                subject: 'Build Success',
+                from: 'kiel0103@naver.com',
+                to: 'kiel0103@naver.com'
+            )
+        }
+        failure {
+            emailext(
+                body: 'BUILD_ID=$BUILD_ID - Build Failed',
+                subject: 'Build Failed',
+                from: 'kiel0103@naver.com',
+                to: 'kiel0103@naver.com'
+            )
+        }
+    }
 }

@@ -47,18 +47,6 @@ pipeline {
                 sh "docker tag 2024-calculator:latest $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
                 sh "docker push $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
                 sh "docker logout"
-//                 withCredentials([usernamePassword(
-//                     credentialsId: 'docker_hub_test_credential',
-//                     usernameVariable: 'DOCKER_USERNAME',
-//                     passwordVariable: 'DOCKER_PASSWORD'
-//                 )]) {
-//                     sh """
-//                     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-//                     docker tag 2024-calculator:latest $DOCKER_USERNAME/2024-calculator:latest
-//                     docker push $DOCKER_USERNAME/2024-calculator:latest
-//                     docker logout
-//                     """
-//                 }
             }
         }
     }

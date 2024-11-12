@@ -59,26 +59,20 @@ pipeline {
         }
         stage("Acceptance Test") {
             steps {
-                sleep 60
+                sleep 120
                 sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
-            }
-        }
-        stage("Clean Up") {
-            steps {
-                sh "docker stop calculator-app"
-                sh "docker rm calculator-app"
             }
         }
     }
     post {
-        success {
-            emailext(
-                body: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}: Check console output at ${env.BUILD_URL} to view the results.",
-                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-                to: "kiel0103@naver.com,kiel0103@kakao.com"
-            )
-        }
-        failure {
+        always {    // stages 에서 중간에 실패하더라도 무조건 수행됨
+            echo "finalize"
+
+            // '' 사용 시 $ 부분이 Groovy 변수로 인식되지 않음
+            sh 'docker stop $(docker ps -q)'
+            sh 'docker rm $(docker ps -aq)'
+            sh 'docker rmi $(docker images -q)'
+
             emailext(
                 body: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}: Check console output at ${env.BUILD_URL} to view the results.",
                 subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",

@@ -37,18 +37,18 @@ pipeline {
                 sh "docker build -t 2024-calculator ."
             }
         }
-        stage("Push Image") {
-            environment {
-                CALCULATOR_CREDENTIAL = credentials('docker_hub_test_credential')
-                TAG = "1.0.$BUILD_ID"
-            }
-            steps {
-                sh "echo $CALCULATOR_CREDENTIAL_PSW | docker login -u $CALCULATOR_CREDENTIAL_USR --password-stdin"
-                sh "docker tag 2024-calculator:latest $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
-                sh "docker push $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
-                sh "docker logout"
-            }
-        }
+//         stage("Push Image") {
+//             environment {
+//                 CALCULATOR_CREDENTIAL = credentials('docker_hub_test_credential')
+//                 TAG = "1.0.$BUILD_ID"
+//             }
+//             steps {
+//                 sh "echo $CALCULATOR_CREDENTIAL_PSW | docker login -u $CALCULATOR_CREDENTIAL_USR --password-stdin"
+//                 sh "docker tag 2024-calculator:latest $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
+//                 sh "docker push $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
+//                 sh "docker logout"
+//             }
+//         }
     }
     post {
         success {

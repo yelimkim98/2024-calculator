@@ -54,7 +54,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "docker run -d -p 8765:8080 --name calculator-app $DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker run -d -p 8765:8080 $DOCKER_HUB_IMAGE_REPO:$TAG"
             }
         }
         stage("Acceptance Test") {

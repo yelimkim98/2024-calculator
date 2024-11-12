@@ -54,7 +54,15 @@ pipeline {
         }
         stage("Deploy") {
             steps {
+                sh "docker stop calculator-app"
+                sh "docker rm calculator-app"
                 sh "docker run -d -p 8765:8080 --name calculator-app $DOCKER_HUB_IMAGE_REPO:$TAG"
+            }
+        }
+        stage("Acceptance Test") {
+            steps {
+                sleep 60
+                sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
             }
         }
     }

@@ -71,7 +71,7 @@ pipeline {
             // '' 사용 시 $ 부분이 Groovy 변수로 인식되지 않음
             sh 'docker stop $(docker ps -q)'
             sh 'docker rm $(docker ps -aq)'
-            sh 'docker rmi $(docker images -q)'
+            sh "docker rmi $DOCKER_HUB_IMAGE_REPO:$TAG"
 
             emailext(
                 body: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}: Check console output at ${env.BUILD_URL} to view the results.",

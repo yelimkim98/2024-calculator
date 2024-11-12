@@ -40,7 +40,7 @@ pipeline {
         stage("Push Image") {
             environment {
                 CALCULATOR_CREDENTIAL = credentials('docker_hub_test_credential')
-                TAG = "1.0.$BUILD_ID"
+                TAG = "1.0.${env.BUILD_ID}"
             }
             steps {
                 sh "echo $CALCULATOR_CREDENTIAL_PSW | docker login -u $CALCULATOR_CREDENTIAL_USR --password-stdin"
@@ -53,16 +53,16 @@ pipeline {
     post {
         success {
             emailext(
-                body: 'BUILD_ID=$BUILD_ID - Build Success',
-                subject: 'Build Success',
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                body: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}: Check console output at ${env.BUILD_URL} to view the results.",
+                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                to: "kiel0103@naver.com,kiel0103@kakao.com"
             )
         }
         failure {
             emailext(
-                body: 'BUILD_ID=$BUILD_ID - Build Failed',
-                subject: 'Build Failed',
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                body: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - ${currentBuild.currentResult}: Check console output at ${env.BUILD_URL} to view the results.",
+                subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                to: "kiel0103@naver.com,kiel0103@kakao.com"
             )
         }
     }

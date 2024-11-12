@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # HTTP GET 요청을 보내고 결과를 변수에 저장
-result=$(curl -s http://localhost:8765/sum?a=1&b=2)
+result=$(curl -s 'http://localhost:8765/sum?a=1&b=2')
 
 # 결과가 3인지 검사
 if test "$result" -eq 3; then

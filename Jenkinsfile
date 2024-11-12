@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HUB_IMAGE_REPO =  "kiel0103/2024-calculator"
+        TAG = "1.0.${env.BUILD_ID}"
+    }
     stages {
         stage("Permission") {
             steps {
@@ -40,13 +44,17 @@ pipeline {
         stage("Push Image") {
             environment {
                 CALCULATOR_CREDENTIAL = credentials('docker_hub_test_credential')
-                TAG = "1.0.${env.BUILD_ID}"
             }
             steps {
                 sh "echo $CALCULATOR_CREDENTIAL_PSW | docker login -u $CALCULATOR_CREDENTIAL_USR --password-stdin"
-                sh "docker tag 2024-calculator:latest $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
-                sh "docker push $CALCULATOR_CREDENTIAL_USR/2024-calculator:$TAG"
+                sh "docker tag 2024-calculator:latest $DOCKER_HUB_IMAGE_REPO:$TAG"
+                sh "docker push $DOCKER_HUB_IMAGE_REPO:$TAG"
                 sh "docker logout"
+            }
+        }
+        stage("Deploy") {
+            steps {
+                sh "docker run -d -p 8765:8080 --name calculator-app $DOCKER_HUB_IMAGE_REPO:$TAG"
             }
         }
     }
